@@ -1,4 +1,5 @@
-function init() {
+
+        function init() {
     gsap.registerPlugin(ScrollTrigger);
 
     const locoScroll = new LocomotiveScroll({
@@ -47,11 +48,10 @@ document.addEventListener("mousemove", function(dets) {
     }
 });
 
-/* Mobile modal functionality
 const mobileModal = document.getElementById('mobileModal');
 const modalImage = document.getElementById('modalImage');
 const closeModal = document.getElementById('closeModal');
-const mentionBoxes = document.querySelectorAll('.mention-box');
+const mentionBoxes = document.querySelectorAll('.mention-box, .mention-box-large');
 
 function isMobileDevice() {
     return window.innerWidth <= 768;
@@ -90,62 +90,6 @@ if (!isMobileDevice()) {
                 crsr.style.height = "370px";
                 crsr.style.borderRadius = "0";
                 crsr.style.backgroundImage = `url(${att})`;
-            }
-        });
-        elem.addEventListener("mouseleave", function() {
-            if (crsr) {
-                crsr.style.width = "20px";
-                crsr.style.height = "20px";
-                crsr.style.borderRadius = "50%";
-                crsr.style.backgroundImage = "none";
-            }
-        });
-    });
-}*/
-
-const mobileModal = document.getElementById('mobileModal');
-const modalImage = document.getElementById('modalImage');
-const closeModal = document.getElementById('closeModal');
-const mentionBoxes = document.querySelectorAll('.mention-box, .mention-box-large');
-
-function isMobileDevice() {
-    return window.innerWidth <= 768;
-}
-
-mentionBoxes.forEach(box => {
-    box.addEventListener('click', function() {
-        if (isMobileDevice()) {
-            const imageUrl = this.getAttribute('data-image');
-            modalImage.src = imageUrl;
-            mobileModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-    });
-});
-
-closeModal.addEventListener('click', function() {
-    mobileModal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-});
-
-mobileModal.addEventListener('click', function(e) {
-    if (e.target === mobileModal) {
-        mobileModal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-});
-
-// Existing hover functionality for desktop - avec différentes tailles
-if (!isMobileDevice()) {
-    // Grandes images pour mention-box-large
-    document.querySelectorAll('.mention-box-large').forEach(function(elem) {
-        elem.addEventListener("mouseenter", function() {
-            var att = elem.getAttribute("data-image");
-            if (crsr) {
-                crsr.style.width = "900px";  // Plus grand
-                crsr.style.height = "800px";  // Plus grand
-                crsr.style.borderRadius = "0";
-                crsr.style.backgroundImage = `url(${att})`;
                 crsr.style.backgroundSize = "cover";
                 crsr.style.backgroundPosition = "center";
             }
@@ -156,33 +100,6 @@ if (!isMobileDevice()) {
                 crsr.style.height = "20px";
                 crsr.style.borderRadius = "50%";
                 crsr.style.backgroundImage = "none";
-                crsr.style.backgroundSize = "";
-                crsr.style.backgroundPosition = "";
-            }
-        });
-    });
-    
-    // Images normales pour mention-box
-    document.querySelectorAll('.mention-box').forEach(function(elem) {
-        elem.addEventListener("mouseenter", function() {
-            var att = elem.getAttribute("data-image");
-            if (crsr) {
-                crsr.style.width = "470px";
-                crsr.style.height = "370px";
-                crsr.style.borderRadius = "0";
-                crsr.style.backgroundImage = `url(${att})`;
-                crsr.style.backgroundSize = "cover";
-                crsr.style.backgroundPosition = "center";
-            }
-        });
-        elem.addEventListener("mouseleave", function() {
-            if (crsr) {
-                crsr.style.width = "20px";
-                crsr.style.height = "20px";
-                crsr.style.borderRadius = "50%";
-                crsr.style.backgroundImage = "none";
-                crsr.style.backgroundSize = "";
-                crsr.style.backgroundPosition = "";
             }
         });
     });
@@ -336,39 +253,42 @@ function manageStickyBarVisibility() {
     }
 }
 
-document.querySelectorAll(".row").forEach((row) => {
-    ScrollTrigger.create({
-        trigger: row,
-        scroller: ".main",
-        start: "top 70%",
-        end: "top 30%",
-        scrub: true,
-        onUpdate: (self) => {
-            const progress = self.progress;
-            const maxGap = window.innerWidth < 900 ? 10 : 1;
-            const minGap = window.innerWidth < 900 ? 0.5 : 15;
-            const currentGap = minGap + (maxGap - minGap) * progress;
-            row.style.gap = `${currentGap}em`;
-        }
+// Technologies animation - désactivée sur mobile
+if (!isMobileDevice()) {
+    document.querySelectorAll(".row").forEach((row) => {
+        ScrollTrigger.create({
+            trigger: row,
+            scroller: ".main",
+            start: "top 70%",
+            end: "top 30%",
+            scrub: true,
+            onUpdate: (self) => {
+                const progress = self.progress;
+                const maxGap = window.innerWidth < 900 ? 10 : 1;
+                const minGap = window.innerWidth < 900 ? 0.5 : 15;
+                const currentGap = minGap + (maxGap - minGap) * progress;
+                row.style.gap = `${currentGap}em`;
+            }
+        });
     });
-});
 
-document.querySelectorAll(".row").forEach((row) => {
-    ScrollTrigger.create({
-        trigger: row,
-        scroller: ".main",
-        start: "top 30%",
-        end: "top 10%",
-        scrub: true,
-        onUpdate: (self) => {
-            const progress = self.progress;
-            const maxGap = window.innerWidth < 900 ? 0.5 : 15;
-            const minGap = window.innerWidth < 900 ? 10 : 1;
-            const currentGap = minGap + (maxGap - minGap) * progress;
-            row.style.gap = `${currentGap}em`;
-        }
+    document.querySelectorAll(".row").forEach((row) => {
+        ScrollTrigger.create({
+            trigger: row,
+            scroller: ".main",
+            start: "top 30%",
+            end: "top 10%",
+            scrub: true,
+            onUpdate: (self) => {
+                const progress = self.progress;
+                const maxGap = window.innerWidth < 900 ? 0.5 : 15;
+                const minGap = window.innerWidth < 900 ? 10 : 1;
+                const currentGap = minGap + (maxGap - minGap) * progress;
+                row.style.gap = `${currentGap}em`;
+            }
+        });
     });
-});
+}
 
 window.addEventListener("scroll", manageStickyBarVisibility);
 
@@ -390,6 +310,12 @@ window.addEventListener('beforeunload', () => {
 let footerAnimationTriggered = false;
 
 function startFooterLoader() {
+    // Désactiver l'animation du compteur sur mobile
+    if (isMobileDevice()) {
+        document.querySelector(".counter").textContent = "100%";
+        return;
+    }
+    
     if (footerAnimationTriggered) return;
     footerAnimationTriggered = true;
     
@@ -445,63 +371,6 @@ ScrollTrigger.create({
     }
 });
 
-
-function isMobileDevice() {
-    return window.innerWidth <= 768;
-}
-
-// Fonctionnalité modal pour mobile
-mentionBoxes.forEach(box => {
-    box.addEventListener('click', function() {
-        if (isMobileDevice()) {
-            const imageUrl = this.getAttribute('data-image');
-            if (imageUrl) {
-                modalImage.src = imageUrl;
-                mobileModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-    });
-});
-
-closeModal.addEventListener('click', function() {
-    mobileModal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-});
-
-mobileModal.addEventListener('click', function(e) {
-    if (e.target === mobileModal) {
-        mobileModal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-});
-
-// Fonctionnalité hover pour desktop - UNIQUEMENT DANS MENTIONS-SECTION
-if (!isMobileDevice()) {
-    mentionBoxes.forEach(function(elem) {
-        elem.addEventListener("mouseenter", function() {
-            var att = elem.getAttribute("data-image");
-            if (crsr && att) {
-                crsr.style.width = "470px";
-                crsr.style.height = "370px";
-                crsr.style.borderRadius = "0";
-                crsr.style.backgroundImage = `url(${att})`;
-                crsr.style.backgroundSize = "cover";
-                crsr.style.backgroundPosition = "center";
-            }
-        });
-        elem.addEventListener("mouseleave", function() {
-            if (crsr) {
-                crsr.style.width = "20px";
-                crsr.style.height = "20px";
-                crsr.style.borderRadius = "50%";
-                crsr.style.backgroundImage = "none";
-            }
-        });
-    });
-}
-
-
 // Smooth scrolling pour la navigation
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -512,26 +381,3 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
-
-
-// Ajoutez ce code à la fin de votre script existant
-function initFooterLinks() {
-    const footerLinks = document.querySelectorAll('.item a');
-    
-    footerLinks.forEach(link => {
-        // Créer un élément span pour l'animation
-        const linkText = link.textContent;
-        const span = document.createElement('span');
-        span.textContent = linkText;
-        span.className = 'link-text';
-        
-        // Remplacer le texte du lien par le span
-        link.innerHTML = '';
-        link.appendChild(span);
-        
-        // S'assurer que le lien reste cliquable
-        link.style.position = 'relative';
-        link.style.zIndex = '100';
-    });
-}
-
